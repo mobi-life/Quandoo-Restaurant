@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="int_tables_col_count">3</integer>
+    <dimen name="dimen_customer_item_left_right_margin">16dp</dimen>
+    <dimen name="dimen_customer_item_top_margin">10dp</dimen>
+    <dimen name="dimen_customer_item_padding">10dp</dimen>
+    <dimen name="dimen_avatar">64dp</dimen>
+    <dimen name="dimen_table_item">64dp</dimen>
+    <dimen name="dimen_table_item_left_right_margin">10dp</dimen>
+    <dimen name="dimen_table_item_top_margin">10dp</dimen>
+</resources>

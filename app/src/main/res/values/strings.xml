@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Quandoo Restaurant</string>
+    <string name="dialog_cancel_reservation_title">Reservation Cancelling</string>
+    <string name="dialog_cancel_reservation_message">Do you want to cancel the reservation for table no %1$s?</string>
+    <string name="dialog_cancel_reservation_message2">Do you want to cancel the reservation for %1$s %2$s?</string>
+    <string name="dialog_cancel_alert_title">Reservation Alert</string>
+    <string name="dialog_cancel_alert_message">Table no %1$s  is already taken by system and cancellation is impossible!</string>
+    <string name="dialog_reservation_title">Table Reservation</string>
+    <string name="dialog_reservation_message">Do you want to reserve table no %1$s for %2$s %3$s?</string>
+    <string name="dialog_no">No</string>
+    <string name="dialog_yes">Yes</string>
+    <string name="dialog_ok">Ok</string>
+    <string name="error">Error</string>
+    <string name="error_multiple_table_reservation">The customer already reserved a table and reservation is not possible for multiple tables.</string>
+    <string name="layout_customers_search_hint">Enter customer name</string>
+    <string name="retry">Retry</string>
+    <string name="empty_result">Empty result, try again!</string>
+</resources>
