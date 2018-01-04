@@ -1,6 +1,8 @@
 # Quandoo-Restaurant
 Assesment project task for the Quandoo company , based on MVVM & reactive architecture.
 
+APK File : https://github.com/mobi-life/Quandoo-Restaurant/raw/master/QuandooRestaurant.apk
+
 The tools are used in the project are:
 - RxJava (streaming and mapping data from network and local data)
 - Google LiveData (For emitting ViewModel's state)
