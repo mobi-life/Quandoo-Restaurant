@@ -16,6 +16,7 @@ project.ext {
     junitVersion = "4.12"
     testRunnerVersion = "1.0.1"
     espressoVersion = "3.0.1"
+    espressoContribVersion = "2.2"
     mockitoVersion = "2.10.0"
     daggerMockVersion = "0.8.2"
     javaxInjectVersion = "1"
@@ -72,6 +73,14 @@ dependencies {
     androidTestImplementation "com.android.support.test:runner:$project.testRunnerVersion"
     androidTestImplementation "com.android.support.test:rules:$project.testRunnerVersion"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$project.espressoVersion"
+    androidTestImplementation("com.android.support.test.espresso:espresso-contrib:$project.espressoContribVersion") {
+        // Necessary to avoid version conflicts
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude module: 'recyclerview-v7'
+    }
+
     androidTestImplementation "org.mockito:mockito-android:$project.mockitoVersion"
     androidTestCompile 'com.google.code.findbugs:jsr305:3.0.1'
     testImplementation "net.jodah:concurrentunit:$project.concurrentunitVersion"

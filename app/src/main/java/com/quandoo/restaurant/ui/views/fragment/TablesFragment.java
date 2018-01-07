@@ -104,8 +104,8 @@ public class TablesFragment extends BaseFragment {
 
     private void showCancelationImpossibleAlert(final TableModel table) {
         SimpleMessageDialog alert = SimpleMessageDialog
-                .getInstance(getString(R.string.dialog_cancel_alert_title),
-                        getString(R.string.dialog_cancel_alert_message,
+                .getInstance(getString(R.string.dialog_reservation_alert_title),
+                        getString(R.string.dialog_reservation_alert_message,
                                 table.getTableNumber()));
         showDialog(alert);
     }
@@ -159,7 +159,7 @@ public class TablesFragment extends BaseFragment {
     }
 
     private void initViews() {
-        mActivity.setTitle("Tables");
+        mActivity.setTitle(getString(R.string.fragment_tables_title));
         int cols = getResources().getInteger(R.integer.int_tables_col_count);
         mRecyclerView.setLayoutManager(new GridLayoutManager(
                 getContext(),

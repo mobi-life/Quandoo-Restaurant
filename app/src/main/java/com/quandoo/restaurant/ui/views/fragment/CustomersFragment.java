@@ -171,7 +171,7 @@ public class CustomersFragment
     }
 
     private void initViews() {
-        mActivity.setTitle("Customers");
+        mActivity.setTitle(getString(R.string.fragment_customers_title));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((view, item) ->
