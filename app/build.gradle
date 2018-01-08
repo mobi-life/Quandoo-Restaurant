@@ -25,6 +25,7 @@ project.ext {
     androidJobVersion = "1.2.1"
     gmsVersion = "11.8.0"
     concurrentunitVersion = "0.4.3"
+    timberVerion = "4.6.0"
 }
 
 
@@ -142,5 +143,5 @@ dependencies {
     implementation "com.google.android.gms:play-services-gcm:$project.gmsVersion"
 
     /* Logging */
-    implementation 'com.jakewharton.timber:timber:4.6.0'
+    implementation "com.jakewharton.timber:timber:$project.timberVersion"
 }
