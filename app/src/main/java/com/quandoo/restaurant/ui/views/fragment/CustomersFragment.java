@@ -23,6 +23,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 /**
  * Created by Behzad on 12/30/2017.
@@ -73,6 +74,7 @@ public class CustomersFragment
     public void onStart() {
         super.onStart();
         if (mAdapter.getItemCount() <= 0) {
+            Timber.i("There is no items found, loading customers is going to be called");
             retry();
         }
     }
@@ -81,12 +83,15 @@ public class CustomersFragment
         mCustomersViewModel.getCustomersStatus()
                 .observe(getActivity(), response -> {
                     if (response.error != null) {
+                        Timber.e(response.error, "Customers' status returned an error");
                         mActivity.showError(response.error.getMessage());
                         mActivity.showRetry();
                     } else if (response.data == null || response.data.isEmpty()) {
+                        Timber.w("Empty data is returned, a list of customers is expected.");
                         mActivity.showError(getString(R.string.empty_result));
                         mActivity.showRetry();
                     } else {
+                        Timber.i("A list of customers is successfully returned");
                         mAdapter.setCustomers(response.data);
                         mSearchView.setVisibility(View.VISIBLE);
                         mSearchView.onActionViewCollapsed();
@@ -109,7 +114,7 @@ public class CustomersFragment
             saveStates();
             switch (navWrapper.screen) {
                 case CancelReservationConfirm:
-                    askForCancelation((CustomerModel) navWrapper.data);
+                    askForCancellation((CustomerModel) navWrapper.data);
                     break;
             }
         });
@@ -124,6 +129,7 @@ public class CustomersFragment
     @Override
     public void retry() {
         mCustomersViewModel.loadCustomers();
+        Timber.i("Load customers is called!");
     }
 
     @Override
@@ -150,6 +156,7 @@ public class CustomersFragment
     public boolean onBackPressed() {
         if (!mSearchView.isIconified()) {
             mSearchView.onActionViewCollapsed();
+            Timber.i("Back press is handled in customers' fragment!");
             return true;
         }
         return super.onBackPressed();
@@ -159,7 +166,7 @@ public class CustomersFragment
         mQuery = mSearchView.getQuery().toString();
     }
 
-    private void askForCancelation(final CustomerModel customer) {
+    private void askForCancellation(final CustomerModel customer) {
         SimpleConfirmationDialog confitmation = SimpleConfirmationDialog.getInstance(
                 getString(R.string.dialog_cancel_reservation_title),
                 getString(R.string.dialog_cancel_reservation_message2,
@@ -168,6 +175,7 @@ public class CustomersFragment
                     mCustomersViewModel.cancelReservation(customer);
                 });
         showDialog(confitmation);
+        Timber.i("Reservation's cancellation dialog is showed.");
     }
 
     private void initViews() {
@@ -176,17 +184,19 @@ public class CustomersFragment
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((view, item) ->
                 mCustomersViewModel.onCustomerSelected(item));
-        mRefreshLayout.setOnRefreshListener(() -> mCustomersViewModel.loadCustomers());
+        mRefreshLayout.setOnRefreshListener(() -> retry());
         mSearchView.setOnClickListener(view -> {
             if (mSearchView.isIconified()) {
                 mSearchView.onActionViewExpanded();
             }
+            Timber.i("Searchview is clicked!");
         });
         mSearchView.setOnQueryTextListener(this);
         mSearchView.setVisibility(mAdapter.getCustomers() != null ? View.VISIBLE : View.GONE);
         if (mQuery != null && !TextUtils.isEmpty(mQuery)) {
             mSearchView.onActionViewExpanded();
             mSearchView.setQuery(mQuery, false);
+            Timber.i("The query \"%s\" is set for SearchView in initializing stage, which means a configuration change happened", mQuery);
         }
     }
 }

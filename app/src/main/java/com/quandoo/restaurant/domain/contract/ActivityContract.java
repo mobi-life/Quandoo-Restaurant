@@ -1,8 +1,8 @@
-package com.quandoo.restaurant.ui.views.fragment;
+package com.quandoo.restaurant.domain.contract;
 
 import com.quandoo.restaurant.di.component.ActivityComponent;
 import com.quandoo.restaurant.di.component.AppComponent;
-import com.quandoo.restaurant.domain.contract.Screen;
+import com.quandoo.restaurant.ui.views.fragment.BaseFragment;
 
 /**
  * Created by Behzad on 12/30/2017.

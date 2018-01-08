@@ -14,9 +14,9 @@ import com.quandoo.restaurant.R;
 import com.quandoo.restaurant.di.component.ActivityComponent;
 import com.quandoo.restaurant.di.component.AppComponent;
 import com.quandoo.restaurant.di.component.DaggerActivityComponent;
+import com.quandoo.restaurant.domain.contract.ActivityContract;
 import com.quandoo.restaurant.domain.contract.Screen;
 import com.quandoo.restaurant.ui.views.dialogs.SimpleMessageDialog;
-import com.quandoo.restaurant.ui.views.fragment.ActivityContract;
 import com.quandoo.restaurant.ui.views.fragment.BaseFragment;
 import com.quandoo.restaurant.ui.views.fragment.CustomersFragment;
 import com.quandoo.restaurant.ui.views.fragment.TablesFragment;
@@ -25,10 +25,13 @@ import java.io.Serializable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class MainActivity
         extends AppCompatActivity
         implements ActivityContract {
+
+    private static final String ERROR_TAG = "error";
 
     @BindView(R.id.progress)
     View mProgress;
@@ -88,7 +91,8 @@ public class MainActivity
     public void showError(String message) {
         SimpleMessageDialog error = SimpleMessageDialog
                 .getInstance(getString(R.string.error), message);
-        error.show(getSupportFragmentManager(), "error");
+        error.show(getSupportFragmentManager(), ERROR_TAG);
+        Timber.i("Error message is displayed");
     }
 
     @Override
@@ -113,10 +117,12 @@ public class MainActivity
 
     @Override
     public void showRetry() {
+        Timber.i("Screen is going to loading retry state.");
         mRetry.setVisibility(View.VISIBLE);
         mRetry.setOnClickListener(view -> {
             mRetry.setVisibility(View.GONE);
             mCurrentFragment.retry();
+            Timber.i("Retry button is clicked!");
         });
     }
 

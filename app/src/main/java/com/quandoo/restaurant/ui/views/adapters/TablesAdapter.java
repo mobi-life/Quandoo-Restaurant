@@ -17,6 +17,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 /**
  * Created by Behzad on 12/30/2017.
@@ -32,6 +33,7 @@ public class TablesAdapter extends RecyclerView.Adapter<TablesAdapter.TablesView
             if (mListener != null) {
                 mListener.onItemClicked(view, (TableModel) view.getTag());
             }
+            Timber.i("Table item is clicked!");
         }
     };
 
@@ -63,23 +65,26 @@ public class TablesAdapter extends RecyclerView.Adapter<TablesAdapter.TablesView
     public void setTables(List<TableModel> tables) {
         this.mTables = tables;
         notifyDataSetChanged();
+        Timber.i("Tables list is updated");
     }
 
     public void setOnItemClickListener(OnItemClickListener<TableModel> listener) {
         this.mListener = listener;
     }
 
-    public void updateTableState(ReservationModel tableReserved) {
-        int tableIndex = findTable(tableReserved.getTableNumber());
+    public void updateTableState(ReservationModel reservation) {
+        int tableIndex = findTable(reservation.getTableNumber());
         if (tableIndex >= 0) {
             TableModel table = mTables.get(tableIndex);
-            if (tableReserved.isCancellation()) {
+            if (reservation.isCancellation()) {
                 table.clearReservation();
             } else {
-                table.setAsReserved(tableReserved.getCustomerId());
+                table.setAsReserved(reservation.getCustomerId());
             }
             notifyItemChanged(tableIndex);
         }
+        Timber.i("Reservation status is updated , cancellation: %s"
+                , reservation.isCancellation());
     }
 
     private int findTable(int tableNo) {

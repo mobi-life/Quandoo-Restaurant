@@ -19,6 +19,7 @@ import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 /**
  * Created by Behzad on 12/30/2017.
@@ -37,6 +38,7 @@ public class CustomersAdapter
             if (mListener != null) {
                 mListener.onItemClicked(view, (CustomerModel) view.getTag());
             }
+            Timber.i("Customer item is clicked!");
         }
     };
 
@@ -70,6 +72,7 @@ public class CustomersAdapter
             this.mCustomers = customers;
             notifyDataSetChanged();
         }
+        Timber.i("Customers list is updated");
     }
 
     public void setOnItemClickListener(OnItemClickListener<CustomerModel> listener) {
@@ -78,6 +81,9 @@ public class CustomersAdapter
 
     public void updateCustomer(CustomerModel customer) {
         notifyItemChanged(mCustomers.indexOf(customer));
+        Timber.i("Updated customer : %s %s",
+                customer.getName()
+                , customer.getFamily());
     }
 
     @Override

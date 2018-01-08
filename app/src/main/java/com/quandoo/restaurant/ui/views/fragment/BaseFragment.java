@@ -12,8 +12,11 @@ import android.view.ViewGroup;
 import com.quandoo.restaurant.di.component.DaggerFragmentComponent;
 import com.quandoo.restaurant.di.component.FragmentComponent;
 import com.quandoo.restaurant.di.module.FragmentModule;
+import com.quandoo.restaurant.domain.contract.ActivityContract;
 import com.quandoo.restaurant.ui.views.dialogs.BaseDialog;
 import com.quandoo.restaurant.viewmodel.NavWrapper;
+
+import timber.log.Timber;
 
 /**
  * Created by Behzad on 12/30/2017.
@@ -54,14 +57,20 @@ public class BaseFragment extends Fragment {
 
     protected void observeLoadingStatus(MutableLiveData<Boolean> status) {
         status.observe(getActivity(), state -> {
-            if (state) mActivity.showProgress();
-            else mActivity.hideProgress();
+            if (state) {
+                mActivity.showProgress();
+                Timber.i("Show progress is called");
+            } else {
+                mActivity.hideProgress();
+                Timber.i("Hide progress is called");
+            }
         });
     }
 
     protected void observeNavigationStatus(MutableLiveData<NavWrapper> status) {
         status.observe(getActivity(), state -> {
             mActivity.changeScreen(state.screen, state.data);
+            Timber.i("Screen change is called for %s", state.screen.name());
         });
     }
 

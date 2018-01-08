@@ -23,6 +23,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 /**
  * Created by Behzad on 12/30/2017.
@@ -52,6 +53,7 @@ public class TablesFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         if (mAdapter.getItemCount() <= 0) {
+            Timber.i("There is no items found, loading tables is going to be called");
             retry();
         }
     }
@@ -64,6 +66,9 @@ public class TablesFragment extends BaseFragment {
         Bundle args = getArguments();
         if (args != null && args.containsKey(FIELD_DATA)) {
             mCustomer = (CustomerModel) args.getSerializable(FIELD_DATA);
+            Timber.i("Tables' fragment received the %s %s as an argument"
+                    , mCustomer.getName()
+                    , mCustomer.getFamily());
         }
 
         observeLoadingStatus(mTablesViewModel.getLoadingStatus());
@@ -85,7 +90,7 @@ public class TablesFragment extends BaseFragment {
                     askForCancelation((TableModel) navWrapper.data);
                     break;
                 case ReservationCancellationAlert:
-                    showCancelationImpossibleAlert((TableModel) navWrapper.data);
+                    showCancellationImpossibleAlert((TableModel) navWrapper.data);
                     break;
             }
         });
@@ -100,14 +105,16 @@ public class TablesFragment extends BaseFragment {
                     mTablesViewModel.cancelReservation(table);
                 });
         showDialog(confitmation);
+        Timber.i("Reservation's cancellation dialog is showed.");
     }
 
-    private void showCancelationImpossibleAlert(final TableModel table) {
+    private void showCancellationImpossibleAlert(final TableModel table) {
         SimpleMessageDialog alert = SimpleMessageDialog
                 .getInstance(getString(R.string.dialog_reservation_alert_title),
                         getString(R.string.dialog_reservation_alert_message,
                                 table.getTableNumber()));
         showDialog(alert);
+        Timber.i("Cancellation alert dialog is showed");
     }
 
     private void askForReservation(final TableModel table) {
@@ -119,18 +126,22 @@ public class TablesFragment extends BaseFragment {
                     mTablesViewModel.saveReservationFor(table, mCustomer);
                 });
         showDialog(confitmation);
+        Timber.i("Reservation dialog is showed");
     }
 
     private void observeTablesStatus() {
         mTablesViewModel.getTablesStatus()
                 .observe(getActivity(), response -> {
                     if (response.error != null) {
+                        Timber.e(response.error, "Tables' status returned an error");
                         mActivity.showError(response.error.getMessage());
                         mActivity.showRetry();
                     } else if (response.data == null || response.data.isEmpty()) {
+                        Timber.w("Empty data is returned, a list of tables is expected.");
                         mActivity.showError(getString(R.string.empty_result));
                         mActivity.showRetry();
                     } else {
+                        Timber.i("A list of tables is successfully returned");
                         mAdapter.setTables(response.data);
                     }
                 });
@@ -139,6 +150,7 @@ public class TablesFragment extends BaseFragment {
     @Override
     public void retry() {
         mTablesViewModel.loadTables();
+        Timber.i("Load tables is called!");
     }
 
     private void observeReservationStatus() {
@@ -150,6 +162,7 @@ public class TablesFragment extends BaseFragment {
                         } else {
                             mActivity.showError(response.error.getMessage());
                         }
+                        Timber.e(response.error,"Error in reservation status update!");
                     } else {
                         mAdapter.updateTableState(response.data);
                         mCustomer.setHasReservation(!response.data.isCancellation());

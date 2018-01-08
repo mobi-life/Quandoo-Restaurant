@@ -140,4 +140,7 @@ dependencies {
 
     /* Google */
     implementation "com.google.android.gms:play-services-gcm:$project.gmsVersion"
+
+    /* Logging */
+    implementation 'com.jakewharton.timber:timber:4.6.0'
 }
